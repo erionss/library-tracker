@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Book Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Library Book Tracker</h1>
+
+        <form id="add-book-form">
+            <input type="text" id="title" placeholder="Book Title" required />
+            <input type="text" id="author" placeholder="Author" required />
+            <button type="submit">Add Book</button>
+        </form>
+
+        <div class="filter-buttons">
+            <button id="filter-available">Show Available Books Only</button>
+            <button id="show-all">Show All Books</button>
+        </div>
+
+        <section id="book-list"></section>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
