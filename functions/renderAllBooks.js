@@ -1,7 +1,6 @@
 import { books } from "../data/books.js";
 import { addBook, addRating, getAvailableBooks, getAverageRating, removeBook, toggleAvailability } from "./coreFunctions.js";
 
-const bookListContainer = document.getElementById("book-list");
 const filterBtn = document.getElementById('filter-available');
 const showAllBtn = document.getElementById('show-all');
 
@@ -39,17 +38,18 @@ form.addEventListener('submit', (e) => {
 });
 
 export function renderBooks(list = books) {
-    bookListContainer.innerHTML = '';
+  const bookListContainer = document.getElementById("book-list");
 
-    list.forEach(book => {
-        const avgRating = book.ratings.length > 0 ?
-            getAverageRating(book.title) : "No ratings";
+  bookListContainer.innerHTML = '';
 
-        const bookCard = document.createElement('div');
-        bookCard.classList.add('book-card');
-        bookCard.classList.add(book.isAvailable ? 'available' : 'unavailable');
+  list.forEach(book => {
+    const avgRating = getAverageRating(book.title);
 
-        bookCard.innerHTML = `
+    const bookCard = document.createElement('div');
+    bookCard.classList.add('book-card');
+    bookCard.classList.add(book.isAvailable ? 'available' : 'unavailable');
+
+    bookCard.innerHTML = `
             <h3>${book.title}</h3>
             <p><strong>Author:</strong> ${book.author}</p>
             <p><strong>Ratings:</strong> ${book.ratings.join(', ') || 'No ratings yet'}</p>
@@ -59,34 +59,39 @@ export function renderBooks(list = books) {
             <button class="remove-book" data-title="${book.title}">Remove Book</button>
         `;
 
-        bookListContainer.appendChild(bookCard);
-    })
+    bookListContainer.appendChild(bookCard);
+  })
 }
 
-bookListContainer.addEventListener('click', event => {
+function addEvents() {
+  const bookListContainer = document.getElementById("book-list");
+  bookListContainer.addEventListener('click', event => {
     const target = event.target;
     const title = target.dataset.title;
     if (!title) return;
 
     if (target.classList.contains('toggle-availability')) {
-        toggleAvailability(title);
-        renderBooks();
+      toggleAvailability(title);
+      renderBooks();
     } else if (target.classList.contains('add-rating')) {
-        const ratingStr = prompt('Enter rating 1-5:');
-        const rating = Number(ratingStr);
-        if (rating >= 1 && rating <= 5 && Number.isInteger(rating)) {
-            addRating(title, rating);
-            renderBooks();
-        } else {
-            alert('Invalid rating');
-        }
+      const ratingStr = prompt('Enter rating 1-5:');
+      const rating = Number(ratingStr);
+      if (rating >= 1 && rating <= 5 && Number.isInteger(rating)) {
+        addRating(title, rating);
+        renderBooks();
+      } else {
+        alert('Invalid rating');
+      }
     } else if (target.classList.contains('remove-book')) {
-        if (confirm(`Remove "${title}"?`)) {
-            removeBook(title);
-            renderBooks();
-        }
+      if (confirm(`Remove "${title}"?`)) {
+        removeBook(title);
+        renderBooks();
+      }
     }
-});
+  });
+}
+
+addEvents();
 
 filterBtn.addEventListener('click', () => {
   const availableBooks = getAvailableBooks(books)

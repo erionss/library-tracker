@@ -1,8 +1,5 @@
 import { books } from "../data/books.js";
 
-export function getTheBook(title) {
-    return books.find(book => book.title === title);
-}
 
 function getTheSum(ratings) {
     let sum = 0;
@@ -26,19 +23,6 @@ export const removeBook = (title) => {
 export function toggleAvailability(title) {
     const selectedBook = getTheBook(title);
     selectedBook.isAvailable = !selectedBook.isAvailable;
-}
-
-export function addRating(title, rating) {
-    const selectedBook = getTheBook(title);
-    selectedBook.ratings.push(rating);
-}
-
-export function getAverageRating(title) {
-    const selectedBook = getTheBook(title);
-    const selectedBookRatings = selectedBook.ratings;
-    const numberOfRatings = selectedBookRatings.length;
-    const ratingsSum = getTheSum(selectedBookRatings);
-    return ratingsSum / numberOfRatings;
 }
 
 export function getAvailableBooks() {
